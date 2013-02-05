@@ -12,8 +12,8 @@ class nusoapNusoapModel extends nusoapNusoapModel_Parent
         if (!isset(Clementine::$register['nusoap'])) {
             // l'extension PHP soap ne fonctionne pas bien, j'utilise donc nusoap
             require(__FILES_ROOT_NUSOAP__ . '/lib/nusoap-0.9.5/nusoap.php');
-            // connexion, avec ou sans le cache selon la valeur de config[module_nusoap][cache]
-            if (Clementine::$config['module_nusoap']['cache']) {
+            // connexion, avec ou sans le cache selon la valeur de config [nusoap]cache
+            if (Clementine::$config['nusoap']['cache']) {
                 require(__FILES_ROOT_NUSOAP__ . '/lib/nusoap-0.9.5/class.wsdlcache.php');
             }
             Clementine::$register['nusoap'] = array();
@@ -33,18 +33,18 @@ class nusoapNusoapModel extends nusoapNusoapModel_Parent
     public function getClient($uri, $options = array('trace' => '0'))
     {
         if (!isset(Clementine::$register['nusoap']['client'][$uri])) {
-            if (Clementine::$config['module_nusoap']['cache']) {
+            if (Clementine::$config['nusoap']['cache']) {
                 // duree du cache par defaut : 10min
                 $cache_lifetime = 0;
-                if (isset(Clementine::$config['module_nusoap']['cache_lifetime'])) {
-                    $cache_lifetime = Clementine::$config['module_nusoap']['cache_lifetime'];
+                if (isset(Clementine::$config['nusoap']['cache_lifetime'])) {
+                    $cache_lifetime = Clementine::$config['nusoap']['cache_lifetime'];
                 }
                 if (!$cache_lifetime) {
                     $cache_lifetime = 600;
                 }
                 // repertoire du cache par defaut : soap.wsdl_cache_dir, ou /tmp sinon
-                if (isset(Clementine::$config['module_nusoap']['cache_dir']) && Clementine::$config['module_nusoap']['cache_dir']) {
-                        $wsdl_cache_dir = Clementine::$config['module_nusoap']['cache_dir'];
+                if (isset(Clementine::$config['nusoap']['cache_dir']) && Clementine::$config['nusoap']['cache_dir']) {
+                        $wsdl_cache_dir = Clementine::$config['nusoap']['cache_dir'];
                 } else {
                     $wsdl_cache_dir = ini_get("soap.wsdl_cache_dir");
                     if (!$wsdl_cache_dir) {
